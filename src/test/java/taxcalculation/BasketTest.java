@@ -73,4 +73,23 @@ public class BasketTest {
                         .receipt()
         ).isEqualTo("1 barre de chocolat : 0.85 Montant des taxes : 0.00 Total : 0.85");
     }
+
+    @Test
+    void medicineIsNotTaxedAndTotalIsMedicinePrice() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 boîte de pilules contre la migraine à 9.75")
+                        .receipt()
+        ).isEqualTo("1 boîte de pilules contre la migraine : 9.75 Montant des taxes : 0.00 Total : 9.75");
+    }
+
+    @Test
+    void bookIsNotTaxedAndTotalIsBookPrice() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 livre à 12.49")
+                        .receipt()
+        ).isEqualTo("1 livre : 12.49 Montant des taxes : 0.00 Total : 12.49");
+    }
+
 }
