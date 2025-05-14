@@ -1,6 +1,8 @@
 package taxcalculation;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -12,11 +14,16 @@ public class BasketTest {
         assertThat(new Basket().receipt()).isEqualTo("Montant des taxes : 0.00 Total : 0.00");
     }
 
-    @Test
-    void aCompactDiscIsTaxedAt10() {
+    @ParameterizedTest
+    @CsvSource({
+            "14.99, 16.49, 1.50",
+            "12.00, 13.20, 1.20"
+    })
+    void aCompactDiscIsTaxedAt10(String itemPrice, String taxedPrice, String taxAmount) {
         assertThat(new Basket()
-                .addItem("1 CD musical à 14.99")
+                .addItem("1 CD musical à " + itemPrice)
                 .receipt())
-                .isEqualTo("1 CD musical : 16.49 Montant des taxes : 1.50 Total : 16.49");
+                .isEqualTo("1 CD musical : " + taxedPrice + " Montant des taxes : " + taxAmount + " Total : " + taxedPrice);
     }
+
 }
