@@ -126,5 +126,13 @@ public class BasketTest {
         ).isEqualTo("1 flacon de parfum importé : 21.45 Montant des taxes : 2.85 Total : 21.45");
     }
 
+    @Test
+    void foodImportedItemisTaxedAt5Percent() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 boîte de chocolats importée à 10.00")
+                        .receipt()
+        ).isEqualTo("1 boîte de chocolats importée : 10.50 Montant des taxes : 0.50 Total : 10.50");
+    }
 
 }
