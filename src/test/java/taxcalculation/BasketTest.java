@@ -135,4 +135,29 @@ public class BasketTest {
         ).isEqualTo("1 boîte de chocolats importée : 10.50 Montant des taxes : 0.50 Total : 10.50");
     }
 
+    @Test
+    void basketMixingTaxedAndExemptedImportedItemsGivesAppropriateTaxesAndTotal() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 boîte de chocolats importée à 10.00")
+                        .addItem("1 flacon de parfum importé à 47.50")
+                        .receipt()
+        ).isEqualTo("1 boîte de chocolats importée : 10.50 1 flacon de parfum importé : 54.65 " +
+                "Montant des taxes : 7.65 Total : 65.15");
+    }
+
+    @Test
+    void basketMixingAllKindsOfItemsGivesAppropriateTaxesAndTotal() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 flacon de parfum importé à 27.99")
+                        .addItem("1 flacon de parfum à 18.99")
+                        .addItem("1 boîte de pilules contre la migraine à 9.75")
+                        .addItem("1 boîte de chocolats importés à 11.25")
+                        .receipt()
+        ).isEqualTo("1 flacon de parfum importé : 32.19 1 flacon de parfum : 20.89 " +
+                "1 boîte de pilules contre la migraine : 9.75 1 boîte de chocolats importés : 11.85 " +
+                "Montant des taxes : 6.70 Total : 74.68");
+    }
+
 }
