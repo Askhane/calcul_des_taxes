@@ -5,7 +5,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 class Item {
-    public static final BigDecimal TAX_RATE = new BigDecimal("0.1");
+    public static final BigDecimal STANDARD_TAX_RATE = new BigDecimal("0.1");
     private final BigDecimal price;
     public final String name;
 
@@ -15,7 +15,8 @@ class Item {
     }
 
     public BigDecimal taxAmount() {
-        BigDecimal taxAmount = price.multiply(TAX_RATE);
+        BigDecimal taxRate = name.contains("chocolat") ? BigDecimal.ZERO : STANDARD_TAX_RATE;
+        BigDecimal taxAmount = price.multiply(taxRate);
         return roundToUpper5Hundredth(taxAmount);
     }
 
