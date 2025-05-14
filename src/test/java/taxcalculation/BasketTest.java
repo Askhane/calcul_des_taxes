@@ -92,4 +92,16 @@ public class BasketTest {
         ).isEqualTo("1 livre : 12.49 Montant des taxes : 0.00 Total : 12.49");
     }
 
+    @Test
+    void basketMixingTaxedAndExemptedItemsGivesAppropriateTaxesAndTotal() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 livre à 12.49")
+                        .addItem("1 CD musical à 14.99")
+                        .addItem("1 barre de chocolat à 0.85")
+                        .receipt()
+        ).isEqualTo("1 livre : 12.49 1 CD musical : 16.49 1 barre de chocolat : 0.85 " +
+                "Montant des taxes : 1.50 Total : 29.83");
+    }
+
 }
