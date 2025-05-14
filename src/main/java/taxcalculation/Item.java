@@ -7,38 +7,25 @@ import java.math.RoundingMode;
 import static java.math.BigDecimal.TWO;
 
 class Item {
-    public static final BigDecimal STANDARD_TAX_RATE = new BigDecimal("0.1");
-    public static final BigDecimal EXEMPTED_RATE = BigDecimal.ZERO;
-    private static final BigDecimal IMPORTED_TAX_RATE = new BigDecimal("0.05");
     private final BigDecimal price;
     public final String name;
+    private final TaxRule taxRule;
 
-    Item(String name, String price) {
+    Item(String name, String price, TaxRule taxRule) {
         this.name = name;
         this.price = new BigDecimal(price);
+        this.taxRule = taxRule;
     }
 
     public BigDecimal taxAmount() {
-        BigDecimal standardTaxAmount = roundToUpper5Hundredth(price.multiply(taxRate()));
-        BigDecimal importedTaxAmount = roundToUpper5Hundredth(price.multiply(getImportedTaxRate()));
+        BigDecimal standardTaxAmount = roundToUpper5Hundredth(price.multiply(taxRule.rate));
+        BigDecimal importedTaxAmount = roundToUpper5Hundredth(price.multiply(taxRule.importedRate));
 
         return standardTaxAmount.add(importedTaxAmount);
     }
 
-    private BigDecimal getImportedTaxRate() {
-        return isImported() ? IMPORTED_TAX_RATE : EXEMPTED_RATE;
-    }
-
-    private boolean isImported() {
-        return name.contains("importé");
-    }
-
-    private BigDecimal taxRate() {
-        return isExempted() ? EXEMPTED_RATE : STANDARD_TAX_RATE;
-    }
-
-    private boolean isExempted() {
-        return name.contains("chocolat") || name.contains("pilules") || name.contains("livre");
+    public BigDecimal taxedPrice() {
+        return price.add(taxAmount());
     }
 
     private static BigDecimal roundToUpper5Hundredth(BigDecimal value) {
@@ -49,10 +36,6 @@ class Item {
 
     private static BigDecimal roundToUpperTenth(BigDecimal value) {
         return value.setScale(1, RoundingMode.UP);
-    }
-
-    public BigDecimal taxedPrice() {
-        return price.add(taxAmount());
     }
 
 }
