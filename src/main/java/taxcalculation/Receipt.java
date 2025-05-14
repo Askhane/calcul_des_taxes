@@ -1,21 +1,29 @@
 package taxcalculation;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-record Receipt(Item item) {
+record Receipt(List<Item> items) {
 
     public String format() {
         StringBuilder receipt = new StringBuilder();
-        if (item.taxedPrice().compareTo(BigDecimal.ZERO) != 0) {
-            receipt.append(formattedItem());
+
+        receipt.append(itemList());
+        if (!receipt.isEmpty()) {
+            receipt.append(" ");
         }
         appendTotals(receipt);
         return receipt.toString();
     }
 
-    private String formattedItem() {
-        return item.name + " : " + formatPrice(item.taxedPrice()) + " ";
+    private String itemList() {
+        return items.stream().map(this::formattedItem).collect(Collectors.joining(" "));
+    }
+
+    private String formattedItem(Item item) {
+        return item.name + " : " + formatPrice(item.taxedPrice());
     }
 
     private void appendTotals(StringBuilder receipt) {
@@ -26,11 +34,11 @@ record Receipt(Item item) {
 
 
     private BigDecimal totalAmount() {
-        return item.taxedPrice();
+        return items.stream().map(Item::taxedPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     private BigDecimal taxAmount() {
-        return item.taxAmount();
+        return items.stream().map(Item::taxAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 

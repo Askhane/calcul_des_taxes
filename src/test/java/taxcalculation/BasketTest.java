@@ -54,4 +54,14 @@ public class BasketTest {
                         .receipt()
         ).isEqualTo("1 flacon de parfum : " + taxedPrice + " Montant des taxes : " + taxAmount + " Total : " + taxedPrice);
     }
+
+    @Test
+    void given2TaxedItemsThenTaxAmountIsTheSumOfItemsTaxAndTotalIsTheSumOfItemsPrice() {
+        assertThat(
+                new Basket()
+                        .addItem("1 CD musical à 14.99")
+                        .addItem("1 flacon de parfum à 18.99")
+                        .receipt()
+        ).isEqualTo("1 CD musical : 16.49 1 flacon de parfum : 20.89 Montant des taxes : 3.40 Total : 37.38");
+    }
 }

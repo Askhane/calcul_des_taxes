@@ -1,15 +1,18 @@
 package taxcalculation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Basket {
-    private Item item = ItemParser.parseItem(" à 0.00");
+    private List<Item> items = new ArrayList<>();
 
     public String receipt() {
-        Receipt receipt = new Receipt(item);
+        Receipt receipt = new Receipt(items);
         return receipt.format();
     }
 
     public Basket addItem(String itemDescription) {
-        item = ItemParser.parseItem(itemDescription);
+        items.add(ItemParser.parseItem(itemDescription));
         return this;
     }
 }
