@@ -64,4 +64,13 @@ public class BasketTest {
                         .receipt()
         ).isEqualTo("1 CD musical : 16.49 1 flacon de parfum : 20.89 Montant des taxes : 3.40 Total : 37.38");
     }
+
+    @Test
+    void foodIsExemptedAndTotalIsFoodPrice() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 barre de chocolat à 0.85")
+                        .receipt()
+        ).isEqualTo("1 barre de chocolat : 0.85 Montant des taxes : 0.00 Total : 0.85");
+    }
 }
