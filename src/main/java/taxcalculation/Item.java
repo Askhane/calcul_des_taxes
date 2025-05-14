@@ -18,13 +18,18 @@ class Item {
     }
 
     public BigDecimal taxAmount() {
-        BigDecimal taxAmount = price.multiply(taxRate());
-
-        if (name.contains("importé")) {
-            taxAmount = taxAmount.add(new BigDecimal("2.4"));
+        BigDecimal standardTax = price.multiply(taxRate());
+        
+        BigDecimal importedTax = BigDecimal.ZERO;
+        if (isImported()) {
+            importedTax = new BigDecimal("2.4");
         }
 
-        return roundToUpper5Hundredth(taxAmount);
+        return roundToUpper5Hundredth(standardTax).add(importedTax);
+    }
+
+    private boolean isImported() {
+        return name.contains("importé");
     }
 
     private BigDecimal taxRate() {
