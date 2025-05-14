@@ -103,7 +103,7 @@ public class BasketTest {
         ).isEqualTo("1 livre : 12.49 1 CD musical : 16.49 1 barre de chocolat : 0.85 " +
                 "Montant des taxes : 1.50 Total : 29.83");
     }
-    
+
     @ParameterizedTest
     @CsvSource({
             "47.50, 54.65, 7.15",
@@ -115,6 +115,15 @@ public class BasketTest {
                         .addItem("1 flacon de parfum importé à " + price)
                         .receipt()
         ).isEqualTo("1 flacon de parfum importé : " + taxedPrice + " Montant des taxes : " + taxAmount + " Total : " + taxedPrice);
+    }
+
+    @Test
+    void standardTaxAndImportedTaxAreRoundedAndThenSummed() {
+        assertThat(
+                new Basket()
+                        .addItem("1 flacon de parfum importé à 18.60")
+                        .receipt()
+        ).isEqualTo("1 flacon de parfum importé : 21.45 Montant des taxes : 2.85 Total : 21.45");
     }
 
 

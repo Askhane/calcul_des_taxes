@@ -19,11 +19,10 @@ class Item {
     }
 
     public BigDecimal taxAmount() {
-        BigDecimal standardTax = price.multiply(taxRate());
+        BigDecimal standardTaxAmount = price.multiply(taxRate());
+        BigDecimal importedTaxAmount = price.multiply(getImportedTaxRate());
 
-        BigDecimal importedTax = price.multiply(getImportedTaxRate());
-
-        return roundToUpper5Hundredth(standardTax.add(importedTax));
+        return roundToUpper5Hundredth(standardTaxAmount).add(roundToUpper5Hundredth(importedTaxAmount));
     }
 
     private BigDecimal getImportedTaxRate() {
