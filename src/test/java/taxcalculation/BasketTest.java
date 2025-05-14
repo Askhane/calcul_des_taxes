@@ -104,4 +104,14 @@ public class BasketTest {
                 "Montant des taxes : 1.50 Total : 29.83");
     }
 
+    @Test
+    void standardImportedItemsHaveAnExtraTaxOf5Percent() {
+        Assertions.assertThat(
+                new Basket()
+                        .addItem("1 flacon de parfum importé à 47.50")
+                        .receipt()
+        ).isEqualTo("1 flacon de parfum importé : 54.65 Montant des taxes : 7.15 Total : 54.65");
+    }
+
+
 }
