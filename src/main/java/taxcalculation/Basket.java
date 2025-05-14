@@ -1,7 +1,7 @@
 package taxcalculation;
 
 public class Basket {
-    private Item item = new Item(" à 0.00");
+    private Item item = ItemParser.parseItem(" à 0.00");
 
     public String receipt() {
         Receipt receipt = new Receipt(item);
@@ -9,7 +9,7 @@ public class Basket {
     }
 
     public Basket addItem(String itemDescription) {
-        item = new Item(itemDescription);
+        item = ItemParser.parseItem(itemDescription);
         return this;
     }
 }

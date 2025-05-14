@@ -5,11 +5,9 @@ class Item {
     private final double price;
     public final String name;
 
-    public Item(String itemDescription) {
-        int priceIndex = itemDescription.indexOf(" à ");
-        name = itemDescription.substring(0, priceIndex);
-        String extractedPrice = itemDescription.substring(priceIndex + 3);
-        price = Double.parseDouble(extractedPrice);
+    Item(String name, String price) {
+        this.name = name;
+        this.price = Double.parseDouble(price);
     }
 
     public double taxAmount() {
@@ -19,4 +17,5 @@ class Item {
     public double taxedPrice() {
         return price + taxAmount();
     }
+
 }

@@ -34,4 +34,5 @@ public class BasketTest {
                         .receipt()
         ).isEqualTo("1 flacon de parfum : 20.89 Montant des taxes : 1.90 Total : 20.89");
     }
+    
 }
