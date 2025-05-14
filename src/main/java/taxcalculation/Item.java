@@ -1,36 +1,37 @@
 package taxcalculation;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 
 class Item {
     public static final BigDecimal TAX_RATE = new BigDecimal("0.1");
-    private final double price;
+    private final BigDecimal price;
     public final String name;
 
     Item(String name, String price) {
         this.name = name;
-        this.price = Double.parseDouble(price);
+        this.price = new BigDecimal(price);
     }
 
-    public double taxAmount() {
-        BigDecimal rawAmount = BigDecimal.valueOf(price).multiply(TAX_RATE);
-        return roundToUpper5Hundredth(rawAmount);
+    public BigDecimal taxAmount() {
+        BigDecimal taxAmount = price.multiply(TAX_RATE);
+        return roundToUpper5Hundredth(taxAmount);
     }
 
-    private static double roundToUpper5Hundredth(BigDecimal value) {
+    private static BigDecimal roundToUpper5Hundredth(BigDecimal value) {
         BigDecimal two = new BigDecimal("2");
         BigDecimal valueTimes2 = value.multiply(two);
-        double roundedValueTimes2 = roundToUpperTenth(valueTimes2).doubleValue();
-        return roundedValueTimes2 / 2;
+        BigDecimal roundedValueTimes2 = roundToUpperTenth(valueTimes2);
+        return roundedValueTimes2.divide(two, MathContext.DECIMAL32);
     }
 
     private static BigDecimal roundToUpperTenth(BigDecimal value) {
         return value.setScale(1, RoundingMode.UP);
     }
 
-    public double taxedPrice() {
-        return price + taxAmount();
+    public BigDecimal taxedPrice() {
+        return price.add(taxAmount());
     }
 
 }

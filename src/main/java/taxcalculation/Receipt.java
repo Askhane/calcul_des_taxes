@@ -1,12 +1,13 @@
 package taxcalculation;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 record Receipt(Item item) {
 
     public String format() {
         StringBuilder receipt = new StringBuilder();
-        if (item.taxedPrice() != 0) {
+        if (item.taxedPrice().compareTo(BigDecimal.ZERO) != 0) {
             receipt.append(formattedItem());
         }
         appendTotals(receipt);
@@ -24,16 +25,16 @@ record Receipt(Item item) {
     }
 
 
-    private double totalAmount() {
+    private BigDecimal totalAmount() {
         return item.taxedPrice();
     }
 
-    private double taxAmount() {
+    private BigDecimal taxAmount() {
         return item.taxAmount();
     }
 
 
-    private static String formatPrice(double value) {
+    private static String formatPrice(BigDecimal value) {
         return String.format(Locale.US, "%.2f", value);
     }
 }

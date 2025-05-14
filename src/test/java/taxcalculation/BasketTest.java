@@ -40,6 +40,12 @@ public class BasketTest {
     @CsvSource({
             "18.40, 20.25, 1.85",
             "12.00, 13.20, 1.20",
+            "13.0, 14.30, 1.30",
+            "13.01, 14.36, 1.35",
+            "13.10, 14.45, 1.35",
+            "13.16, 14.51, 1.35",
+            "10.00, 11.00, 1.00",
+            "15.00, 16.50, 1.50"
     })
     void taxAmountIsRoundedToUpper5Hundredths(String price, String taxedPrice, String taxAmount) {
         Assertions.assertThat(
