@@ -15,8 +15,18 @@ class Item {
 
     public double taxAmount() {
         BigDecimal rawAmount = BigDecimal.valueOf(price).multiply(TAX_RATE);
-        double roundedValueTimes2 = rawAmount.multiply(new BigDecimal("2")).setScale(1, RoundingMode.UP).doubleValue();
+        return roundToUpper5Hundredth(rawAmount);
+    }
+
+    private static double roundToUpper5Hundredth(BigDecimal value) {
+        BigDecimal two = new BigDecimal("2");
+        BigDecimal valueTimes2 = value.multiply(two);
+        double roundedValueTimes2 = roundToUpperTenth(valueTimes2).doubleValue();
         return roundedValueTimes2 / 2;
+    }
+
+    private static BigDecimal roundToUpperTenth(BigDecimal value) {
+        return value.setScale(1, RoundingMode.UP);
     }
 
     public double taxedPrice() {

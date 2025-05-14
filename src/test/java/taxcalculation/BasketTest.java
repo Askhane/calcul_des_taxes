@@ -41,7 +41,7 @@ public class BasketTest {
             "18.40, 20.25, 1.85",
             "12.00, 13.20, 1.20",
     })
-    void taxAmountIsRoundedToUpper5Cents(String price, String taxedPrice, String taxAmount) {
+    void taxAmountIsRoundedToUpper5Hundredths(String price, String taxedPrice, String taxAmount) {
         Assertions.assertThat(
                 new Basket()
                         .addItem("1 flacon de parfum à " + price)
