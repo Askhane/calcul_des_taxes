@@ -27,7 +27,7 @@ class Item {
     }
 
     private boolean isExempted() {
-        return name.contains("chocolat") || name.contains("pilules");
+        return name.contains("chocolat") || name.contains("pilules") || name.contains("livre");
     }
 
     private static BigDecimal roundToUpper5Hundredth(BigDecimal value) {
