@@ -19,6 +19,11 @@ class Item {
 
     public BigDecimal taxAmount() {
         BigDecimal taxAmount = price.multiply(taxRate());
+
+        if (name.contains("importé")) {
+            taxAmount = taxAmount.add(new BigDecimal("2.4"));
+        }
+
         return roundToUpper5Hundredth(taxAmount);
     }
 
