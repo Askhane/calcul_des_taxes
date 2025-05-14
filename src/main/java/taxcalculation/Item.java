@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import static java.math.BigDecimal.TWO;
+
 class Item {
     public static final BigDecimal STANDARD_TAX_RATE = new BigDecimal("0.1");
+    public static final BigDecimal EXEMPTED_RATE = BigDecimal.ZERO;
     private final BigDecimal price;
     public final String name;
 
@@ -15,16 +18,22 @@ class Item {
     }
 
     public BigDecimal taxAmount() {
-        BigDecimal taxRate = name.contains("chocolat") ? BigDecimal.ZERO : STANDARD_TAX_RATE;
-        BigDecimal taxAmount = price.multiply(taxRate);
+        BigDecimal taxAmount = price.multiply(taxRate());
         return roundToUpper5Hundredth(taxAmount);
     }
 
+    private BigDecimal taxRate() {
+        return isExempted() ? EXEMPTED_RATE : STANDARD_TAX_RATE;
+    }
+
+    private boolean isExempted() {
+        return name.contains("chocolat");
+    }
+
     private static BigDecimal roundToUpper5Hundredth(BigDecimal value) {
-        BigDecimal two = new BigDecimal("2");
-        BigDecimal valueTimes2 = value.multiply(two);
+        BigDecimal valueTimes2 = value.multiply(TWO);
         BigDecimal roundedValueTimes2 = roundToUpperTenth(valueTimes2);
-        return roundedValueTimes2.divide(two, MathContext.DECIMAL32);
+        return roundedValueTimes2.divide(TWO, MathContext.DECIMAL32);
     }
 
     private static BigDecimal roundToUpperTenth(BigDecimal value) {
