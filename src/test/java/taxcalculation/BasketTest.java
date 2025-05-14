@@ -34,5 +34,13 @@ public class BasketTest {
                         .receipt()
         ).isEqualTo("1 flacon de parfum : 20.89 Montant des taxes : 1.90 Total : 20.89");
     }
-    
+
+    @Test
+    void taxAmountIsRoundedToUpper5Cents() {
+        assertThat(
+                new Basket()
+                        .addItem("1 flacon de parfum à 18.40")
+                        .receipt()
+        ).isEqualTo("1 flacon de parfum : 20.25 Montant des taxes : 1.85 Total : 20.25");
+    }
 }
