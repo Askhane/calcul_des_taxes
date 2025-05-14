@@ -4,43 +4,27 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-record Receipt(List<Item> items) {
+record Receipt(List<Item> items, BigDecimal taxAmount, BigDecimal totalAmount) {
+
+    public static final String ELEMENT_SEPARATOR = " ";
 
     public String format() {
-        StringBuilder receipt = new StringBuilder();
-
-        receipt.append(itemList());
-        if (!receipt.isEmpty()) {
-            receipt.append(" ");
-        }
-        appendTotals(receipt);
-        return receipt.toString();
+        return Stream.concat(itemDescriptions(), totals()).collect(Collectors.joining(ELEMENT_SEPARATOR));
     }
 
-    private String itemList() {
-        return items.stream().map(this::formattedItem).collect(Collectors.joining(" "));
+    private Stream<String> itemDescriptions() {
+        return items.stream().map(this::formattedItem);
     }
 
     private String formattedItem(Item item) {
         return item.name + " : " + formatPrice(item.taxedPrice());
     }
 
-    private void appendTotals(StringBuilder receipt) {
-        receipt
-                .append("Montant des taxes : ").append(formatPrice(taxAmount()))
-                .append(" Total : ").append(formatPrice(totalAmount()));
+    private Stream<String> totals() {
+        return Stream.of("Montant des taxes : " + formatPrice(taxAmount) + " Total : " + formatPrice(totalAmount));
     }
-
-
-    private BigDecimal totalAmount() {
-        return items.stream().map(Item::taxedPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal taxAmount() {
-        return items.stream().map(Item::taxAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
 
     private static String formatPrice(BigDecimal value) {
         return String.format(Locale.US, "%.2f", value);
