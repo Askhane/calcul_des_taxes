@@ -9,6 +9,7 @@ import static java.math.BigDecimal.TWO;
 class Item {
     public static final BigDecimal STANDARD_TAX_RATE = new BigDecimal("0.1");
     public static final BigDecimal EXEMPTED_RATE = BigDecimal.ZERO;
+    private static final BigDecimal IMPORTED_TAX_RATE = new BigDecimal("0.05");
     private final BigDecimal price;
     public final String name;
 
@@ -19,13 +20,14 @@ class Item {
 
     public BigDecimal taxAmount() {
         BigDecimal standardTax = price.multiply(taxRate());
-        
-        BigDecimal importedTax = BigDecimal.ZERO;
-        if (isImported()) {
-            importedTax = new BigDecimal("2.4");
-        }
 
-        return roundToUpper5Hundredth(standardTax).add(importedTax);
+        BigDecimal importedTax = price.multiply(getImportedTaxRate());
+
+        return roundToUpper5Hundredth(standardTax.add(importedTax));
+    }
+
+    private BigDecimal getImportedTaxRate() {
+        return isImported() ? IMPORTED_TAX_RATE : EXEMPTED_RATE;
     }
 
     private boolean isImported() {

@@ -103,14 +103,18 @@ public class BasketTest {
         ).isEqualTo("1 livre : 12.49 1 CD musical : 16.49 1 barre de chocolat : 0.85 " +
                 "Montant des taxes : 1.50 Total : 29.83");
     }
-
-    @Test
-    void standardImportedItemsHaveAnExtraTaxOf5Percent() {
+    
+    @ParameterizedTest
+    @CsvSource({
+            "47.50, 54.65, 7.15",
+            "10.00, 11.50, 1.50"
+    })
+    void standardImportedItemsHaveAnExtraTaxOf5Percent(double price, String taxedPrice, String taxAmount) {
         Assertions.assertThat(
                 new Basket()
-                        .addItem("1 flacon de parfum importé à 47.50")
+                        .addItem("1 flacon de parfum importé à " + price)
                         .receipt()
-        ).isEqualTo("1 flacon de parfum importé : 54.65 Montant des taxes : 7.15 Total : 54.65");
+        ).isEqualTo("1 flacon de parfum importé : " + taxedPrice + " Montant des taxes : " + taxAmount + " Total : " + taxedPrice);
     }
 
 
