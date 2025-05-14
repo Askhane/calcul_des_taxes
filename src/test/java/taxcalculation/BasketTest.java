@@ -1,5 +1,6 @@
 package taxcalculation;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -35,12 +36,16 @@ public class BasketTest {
         ).isEqualTo("1 flacon de parfum : 20.89 Montant des taxes : 1.90 Total : 20.89");
     }
 
-    @Test
-    void taxAmountIsRoundedToUpper5Cents() {
-        assertThat(
+    @ParameterizedTest
+    @CsvSource({
+            "18.40, 20.25, 1.85",
+            "12.00, 13.20, 1.20",
+    })
+    void taxAmountIsRoundedToUpper5Cents(String price, String taxedPrice, String taxAmount) {
+        Assertions.assertThat(
                 new Basket()
-                        .addItem("1 flacon de parfum à 18.40")
+                        .addItem("1 flacon de parfum à " + price)
                         .receipt()
-        ).isEqualTo("1 flacon de parfum : 20.25 Montant des taxes : 1.85 Total : 20.25");
+        ).isEqualTo("1 flacon de parfum : " + taxedPrice + " Montant des taxes : " + taxAmount + " Total : " + taxedPrice);
     }
 }

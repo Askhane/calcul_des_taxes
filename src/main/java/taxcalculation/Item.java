@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 class Item {
-    public static final double TAX_RATE = 0.1;
+    public static final BigDecimal TAX_RATE = new BigDecimal("0.1");
     private final double price;
     public final String name;
 
@@ -14,8 +14,8 @@ class Item {
     }
 
     public double taxAmount() {
-        double rawAmount = price * TAX_RATE;
-        double roundedValueTimes2 = BigDecimal.valueOf(rawAmount * 2).setScale(1, RoundingMode.UP).doubleValue();
+        BigDecimal rawAmount = BigDecimal.valueOf(price).multiply(TAX_RATE);
+        double roundedValueTimes2 = rawAmount.multiply(new BigDecimal("2")).setScale(1, RoundingMode.UP).doubleValue();
         return roundedValueTimes2 / 2;
     }
 
