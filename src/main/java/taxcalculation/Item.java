@@ -3,9 +3,12 @@ package taxcalculation;
 class Item {
     public static final double TAX_RATE = 0.1;
     private final double price;
+    public final String name;
 
     public Item(String itemDescription) {
-        String extractedPrice = itemDescription.substring(itemDescription.indexOf(" à ") + 3);
+        int priceIndex = itemDescription.indexOf(" à ");
+        name = itemDescription.substring(0, priceIndex);
+        String extractedPrice = itemDescription.substring(priceIndex + 3);
         price = Double.parseDouble(extractedPrice);
     }
 

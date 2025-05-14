@@ -14,7 +14,7 @@ record Receipt(Item item) {
     }
 
     private String formattedItem() {
-        return "1 CD musical : " + formatPrice(item.taxedPrice()) + " ";
+        return item.name + " : " + formatPrice(item.taxedPrice()) + " ";
     }
 
     private void appendTotals(StringBuilder receipt) {
