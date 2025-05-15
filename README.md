@@ -2,7 +2,7 @@
 *Crédits à Guillaume Bodet*
 
 
-### Enoncé
+## Enoncé
 
 Une taxe sur la valeur ajoutée de 10% est appliquée sur chaque produit, à l'exception des livres, de la nourriture et des médicaments, qui en sont exemptés. 
 
@@ -68,3 +68,17 @@ Output 2
 Output 3
 1 flacon de parfum importé : 32.19 1 flacon de parfum : 20.89 1 boîte de pilules contre la migraine : 9.75 1 boîte de chocolats importés : 11.85 Montant des taxes : 6.70 Total : 74.68
 ```
+
+## Prérequis
+
+- Java 21 ou version ultérieure
+- Gradle (le wrapper Gradle est inclus dans le projet)
+
+### Lancement des tests
+
+Pour démarrer les tests, il suffit d'exécuter la commande suivante :
+```bash
+./gradlew test
+```
+> [!NOTE] 
+> Cette commande va automatiquement télécharger les dépendances nécessaires, compiler le projet et exécuter les tests.
